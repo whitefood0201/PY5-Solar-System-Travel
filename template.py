@@ -1,18 +1,20 @@
 import py5
 import functional.FLfunctions as fl
+import functional.lambdas as la
 from scene.shapes import *
 from shapelib import *
         
 def shapes_processor(shape_defines):
     def shapeGenerator(define:list):
         shape:my_shape_class = define[0]
-        for i in range(1, len(define)):
-            if i == 1:
-                shape.color = define[1]
-            if i == 2:
-                shape.move_func = define[2]
-            if i == 3:
-                shape.zoom_func = define[3]
+        setters = [
+            la.setter(shape, "color"),
+            la.setter(shape, "move_func"),
+            la.setter(shape, "zoom_func"),
+        ]
+        param = define[1:]
+        for i in range(0, len(param)):
+            setters[i](param[i])
         return shape
     savers = fl.map(shapeGenerator, shape_defines)
     return savers
