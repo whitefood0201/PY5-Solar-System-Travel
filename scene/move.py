@@ -2,20 +2,59 @@ import math
 
 #https://zh.wikipedia.org/zh-cn/%E5%8F%83%E6%95%B8%E6%96%B9%E7%A8%8B
 
-def m(x, y, t):
-    #x = ori_x + 50 * math.cos(math.radians(t))
-    x2 = x + t
-    y2 = y + 100 * math.sin(math.radians(t))
-    return x2, y2
+def no_move(x, y, t):
+    return x, y
 
-def m1(x, y, t):
-    #x = ori_x + 50 * math.cos(math.radians(t))
-    x2 = x + t
-    y2 = y + 100 * math.cos(math.radians(t))
-    #y = ori_y + t
-    #w2 = ori_w + t
-    #h = ori_h + t
-    return x2, y2
+def sin_move(v, a):
+    def s(x, y, t):
+        x2 = x + v*t
+        y2 = y + a * math.sin(math.radians(t))
+        return x2, y2
+    return s
 
-def circle_move():
-    None
+def cos_move(v, a):
+    def c(x, y, t):
+        x2 = x + v*t
+        y2 = y + a * math.cos(math.radians(t))
+        return x2, y2
+    return c
+
+def tan_move(v, a):
+    def t(x, y, t):
+        x2 = x + v*t
+        y2 = y - a * math.tan(math.radians(t))
+        return x2, y2
+    return t
+
+def circle_move(r, x0=0, y0=0, phi=90, rate=30):
+    def circle(x, y, t):
+        t /= rate
+        x2 = x + r*math.cos(t+phi) + x0
+        y2 = y + r*math.sin(t+phi) + y0
+        return x2, y2
+    return circle
+
+def ellipse_move(a, b, x0=0, y0=0, phi=180, rate=30):
+    def ellipse(x, y, t):
+        t /= rate
+        x2 = x + a*math.cos(t+phi) + x0
+        y2 = y + b*math.sin(t+phi) + y0
+        return x2, y2
+    return ellipse
+
+def line_move(x0, y0, u, v):
+    def line(x, y, t):
+        x2 = x + x0 + u*t
+        y2 = y + y0 + v*t
+        return x2, y2
+    return line
+
+
+def parabola_move(p, x0=0, y0=0):
+    def parabola(x, y ,t):
+        t /= 30 
+        x2 = x + 2*p*(t + x0)
+        y2 = y - 2*p*(t + y0)*(t + y0)
+        print(x2, y2)
+        return x2, y2
+    return parabola
