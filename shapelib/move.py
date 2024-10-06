@@ -2,8 +2,10 @@ import math
 
 #https://zh.wikipedia.org/zh-cn/%E5%8F%83%E6%95%B8%E6%96%B9%E7%A8%8B
 
-def no_move(x, y, t):
-    return x, y
+def no_move():
+    def inner(x, y, t):
+        return x, y
+    return inner
 
 def sin_move(v, a):
     def s(x, y, t):
@@ -42,10 +44,10 @@ def ellipse_move(a, b, x0=0, y0=0, phi=180, rate=30):
         return x2, y2
     return ellipse
 
-def line_move(x0, y0, u, v):
+def line_move(x0, y0, dx, dy):
     def line(x, y, t):
-        x2 = x + x0 + u*t
-        y2 = y + y0 + v*t
+        x2 = x + x0 + dx*t
+        y2 = y + y0 + dy*t
         return x2, y2
     return line
 
@@ -55,6 +57,16 @@ def parabola_move(p, x0=0, y0=0):
         t /= 30 
         x2 = x + 2*p*(t + x0)
         y2 = y - 2*p*(t + y0)*(t + y0)
-        print(x2, y2)
         return x2, y2
     return parabola
+
+
+def defaultMove(x, y, t):
+    x2 = x-t
+    return x2, y
+
+
+def move(func_name):
+    dd = __import__("shapelib.move")
+    f = getattr(dd.move, func_name, None)
+    return f
