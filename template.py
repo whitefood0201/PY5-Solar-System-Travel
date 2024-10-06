@@ -1,37 +1,32 @@
 import py5
 import functional.FLfunctions as fl
-import functional.lambdas as la
-from scene.shapes import *
-from shapelib import *
+import shapelib.shapeFactory as sf
+import shapelib.shapes as sp
+from shapelib.shapes import *
         
-def shapes_processor(shape_defines):
-    def shapeGenerator(define:list):
-        shape:my_shape_class = define[0]
-        setters = [
-            la.setter(shape, "color"),
-            la.setter(shape, "move_func"),
-            la.setter(shape, "zoom_func"),
-        ]
-        param = define[1:]
-        for i in range(0, len(param)):
-            setters[i](param[i])
-        return shape
-    savers = fl.map(shapeGenerator, shape_defines)
-    return savers
-
-shapes = shapes_processor(shape_define)
-
-def shapeDraw(shape:my_shape_class):
+def shapeDraw(shape:sp.absShape):
     shape.draw()
-def shapeUpdate(shape:my_shape_class):
+def shapeUpdate(shape:sp.absShape):
     shape.update()
+
+def initShapes():
+    shapes = sf.shapes_processor("shape.xml")
+    def updateShapes():
+        nonlocal shapes
+        shapes = fl.filter(lambda shp: not shp.removed(), shapes)
+        fl.map(shapeUpdate, shapes)
+    def getShapes():
+        return shapes
+    return updateShapes, getShapes
+updateShapes, getShapes = initShapes()
 
 def setup():
     py5.size(640, 640)
 
 def draw():
+    sps = getShapes()
     py5.background(10, 10, 20)
-    fl.map(shapeDraw, shapes)
-    fl.map(shapeUpdate, shapes)
-    
+    fl.map(shapeDraw, sps)
+    updateShapes()
+
 py5.run_sketch()

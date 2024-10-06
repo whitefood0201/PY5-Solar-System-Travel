@@ -8,3 +8,7 @@ def setter(obj, field):
         if param != None:
             setattr(obj, field, param)
     return inner
+
+def intDict(key, value):
+    v = value if value != None else 0
+    return int(v)
