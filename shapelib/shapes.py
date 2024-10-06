@@ -49,9 +49,7 @@ class absShape:
     
     def draw(self):
         py5.fill(self.color)
-        if self.border != None: 
-            py5.stroke(self.border)
-            print(self.border)
+        if self.border != None: py5.stroke(self.border)
         self.inner_draw()
         py5.no_stroke()
 
