@@ -5,11 +5,34 @@ import shapelib.move as mv
 import shapelib.zoom as zm
 import shapelib.shapes as sp
 
-def shapes_processor(path:str) -> list:
+def scenes_processor(path:str) -> list[tuple[list, str, int]]:
     tree = ET.ElementTree(file=path)
     root = tree.getroot()
-    ellipse = fl.map(genEllip, root.findall(path="ellipse"))
-    rects = fl.map(genRect, root.findall(path="rect"))
+    xmlScenes = root.findall(path="scene")
+    scenes = fl.map(genScene, xmlScenes)
+    return scenes
+
+def genScene(xmlScene:ET.Element) -> dict[str, any]:
+    dic = {}
+    xmlShapes = xmlScene.find("shapes")
+    xmlTitle = xmlScene.find("title")
+
+    dic["duration"] = int(xmlScene.get("duration", default=0))
+    dic["title"] = genTitle(xmlTitle)
+    dic["shapes"] = genShapes(xmlShapes)
+    return dic
+
+def genTitle(xmlTitle:ET.Element) -> dict[str, any]:
+    title = {}
+    title["name"] = xmlTitle.text if xmlTitle.text != None else "scene"  
+    title["color"] = xmlTitle.get("color", default="#FFFFFF")
+    title["font-size"] = int(xmlTitle.get("font-size", default=32))
+    return title
+
+
+def genShapes(shapes:ET.Element) -> list[sp.AbsShape]:
+    ellipse = fl.map(genEllip, shapes.findall(path="ellipse"))
+    rects = fl.map(genRect, shapes.findall(path="rect"))
     return rects + ellipse
 
 def genRect(rectTag:ET.Element):

@@ -1,6 +1,6 @@
 import py5
 
-class absShape:
+class AbsShape:
     def __init__(self, x=0, y=0, w=0, h=0, color="#FFFFFFFF", move=None, zoom=None, border=None):
         self.x:int = x
         self.y:int = y
@@ -83,11 +83,11 @@ class absShape:
         return str(self.__class__) + ": " + str(dict)
 
 
-class Rect(absShape):
+class Rect(AbsShape):
     def inner_draw(self):
         py5.rect(self.x, self.y, self.w, self.h)
 
 
-class Ellipse(absShape):
+class Ellipse(AbsShape):
     def inner_draw(self):
         py5.ellipse(self.x, self.y, self.w, self.h)
