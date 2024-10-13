@@ -1,37 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<rect x="320" y="320" w="320" h="320" color="#000000">
-        <move>no_move</move>
-        <move x0="0" y0="0" dx="0" dy="1">line_move</move>
-        <zoom dw="1" dh="1">line_zoom</zoom>
-    </rect>
-    <rect x="320" y="0" w="320" h="320" color="#FF0000">
-        <move>no_move</move>
-    </rect>
-    <rect x="0" y="320" w="320" h="320" color="#0000FF">
-        <move>no_move</move>
-    </rect>
-    <rect x="0" y="0" w="320" h="320" color="#00FF00">
-        <move>no_move</move>
-        <zoom dw="1" dh="1">line_zoom</zoom>
-        <move x0="0" y0="0" dx="0" dy="1">line_move</move>
-    </rect>
-    <ellipse x="320" y="320" w="100" h="100" color="#FFFFFF">
-        <move>no_move</move>
-    </ellipse>-->
 <scenes>
-    <scene duration="1920">
-        <title font-size="32" color="#0000AA">Earth</title>
+    <scene>
+        <duration>1920</duration>
+        <title>
+            <font-size>32</font-size>
+            <color>#0000AA</color>
+            <name>Earth</name>
+        </title>
+
+        <array name="starColors" type="str">
+            <value>#0000FF</value>
+            <value>#0000AA</value>
+            <value>#000077</value>
+            <value>#000044</value>
+        </array>
+
         <shapes>
-            <rect x="0" y="0" w="1920" h="640" color="#000D11" />
-            <rect x="0" y="0" w="1200" h="640" color="#005072" />
-            <rect x="0" y="0" w="1000" h="640" color="#3080A5" />
-            <rect x="0" y="0" w="810" h="640" color="#67BAE0" />
-            <rect x="0" y="0" w="640" h="640" color="#8CDAFF" />
-            <rect x="0" y="0" w="450" h="640" color="#ADE5FF" />
-            <ellipse x="-125" y="300" w="610" h="1290" color="#8EFF84" />
-            <rect x="170" y="300" w="50" h="41" color="#A8A8A8" border="#999999">
+            <loop>
+                <i>0</i>
+                <step>1</step>
+                <count>
+                    <random>
+                        <from>60</from>
+                        <to>100</to>
+                    </random>
+                </count>
+                <loopContent>                    <!-- equals a `shapes` tag -->
+                    <star>
+                        <layer>3</layer>
+                        <x>
+                            <random>
+                                <from>810</from>
+                                <to>1920</to>
+                            </random>
+                        </x>
+                        <y>
+                            <random>
+                                <from>0</from>
+                                <to>640</to>
+                            </random>
+                        </y>
+                        <w>
+                            <random type="float">
+                                <from>0.1</from>
+                                <to>1</to>
+                            </random>
+                        </w>
+                        <c1>
+                            <getArray name="starColors">
+                                <index>
+                                    <random>
+                                        <from>0</from>
+                                        <to>3</to>
+                                    </random>
+                                </index>
+                            </getArray>
+                        </c1>
+                        <c2>
+                            <getArray name="starColors">
+                                <index>
+                                    <random>
+                                        <from>0</from>
+                                        <to>3</to>
+                                    </random>
+                                </index>
+                            </getArray>
+                        </c2>
+                    </star>
+                </loopContent>
+            </loop>
+
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <w>1920</w>
+                <h>640</h>
+                <color>#000D11</color>
+            </rect>
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <w>1200</w>
+                <h>640</h>
+                <color>#005072</color>
+            </rect>
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <w>1000</w>
+                <h>640</h>
+                <color>#3080A5</color>
+            </rect>
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <w>810</w>
+                <h>640</h>
+                <color>#67BAE0</color>
+            </rect>
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <w>640</w>
+                <h>640</h>
+                <color>#8CDAFF</color>
+            </rect>
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <w>450</w>
+                <h>640</h>
+                <color>#ADE5FF</color>
+            </rect>
+            <ellipse>
+                <layer>3</layer>
+                <x>-125</x>
+                <y>300</y>
+                <w>610</w>
+                <h>1290</h>
+                <color>#8EFF84</color>
+            </ellipse>
+            <rect>
+                <layer>4</layer>
+                <x>180</x>
+                <y>300</y>
+                <w>50</w>
+                <h>41</h>
+                <color>#A8A8A8</color>
+                <border>#999999</border>
                 <move>no_move</move>
             </rect>
         </shapes>
     </scene>
 </scenes>
+

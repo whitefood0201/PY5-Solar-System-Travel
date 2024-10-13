@@ -1,27 +1,21 @@
 import py5
 import functional.FLfunctions as fl
 import shapelib.sceneFactory as sf
-import shapelib.shapes as sp
+from shapelib.scenelib import *
 from shapelib.shapes import *
 
 SCENE_PATH = ".\\shape.xml"
-        
-def shapeDraw(shape:sp.AbsShape):
-    shape.draw()
-def shapeUpdate(shape:sp.AbsShape):
-    shape.update()
-
 
 def initScenes():
     scenes = sf.scenes_processor(SCENE_PATH)
     sceneIndex = 0
     sceneTick = 0
+    currScene = scenes[0]
 
-    currScene = None
     def updateScene():
         nonlocal sceneIndex, sceneTick, scenes
         scene = scenes[sceneIndex]
-        print(sceneTick)
+        #print(sceneTick)
         if sceneTick == scene["duration"]:
             sceneIndex +=1
         sceneTick += 1
@@ -31,9 +25,15 @@ def initScenes():
         nonlocal currScene
         currScene = updateScene()
         
-        currScene["shapes"] = fl.filter(lambda shp: not shp.removed(), currScene["shapes"])
-        fl.map(shapeUpdate, currScene["shapes"])
-        currScene["shapes"] = currScene["shapes"]
+        def updLayer(layer):
+            return fl.filter(lambda shp: not shp.removed(), layer)
+        layers = fl.map(updLayer, currScene["layers"])
+
+        def upd(layer):
+            fl.map(shapeUpdate, layer)
+        fl.map(upd, layers)
+
+        currScene["layers"] = layers
 
     def getScene():
         return currScene
@@ -41,20 +41,45 @@ def initScenes():
     return updateShapes, getScene
 updateShapes, getScene = initScenes()
 
+def initStop():
+    stop:bool = True 
+    def getStop() -> bool:
+        return stop
+    def changeStop():
+        nonlocal stop
+        stop = not stop
+    return changeStop, getStop
+changeStop, getStop = initStop()
+
+
+# ----------------------PY5--------------------------
+
+
 def setup():
     py5.size(640, 640)
 
 def draw():
-    updateShapes()
+    resetAll()
     scene = getScene()
-    sps = scene["shapes"]
-    
+    layers:list[list[sp.AbsShape]] = scene["layers"]
+
     py5.background(10, 10, 20)
-    fl.map(shapeDraw, sps)
+    
+    for shapes in layers:
+        fl.map(shapeDraw, shapes)
 
     title = scene["title"]
-    py5.fill(title["color"])
-    py5.text_size(title["font-size"])
-    py5.text(title["name"], 10, 30)
+    drawText(title["name"], 10, 30, size=title["font-size"], color=title["color"])
+
+    if not getStop():
+        updateShapes() 
+        return
+    
+    # draw "PAUSE"
+    drawText("PAUSE", 320, 320, size=40, color=40, align=py5.CENTER)        
+
+def key_pressed(e:py5.Py5KeyEvent):
+    if e.get_key() == " ":
+        changeStop()
 
 py5.run_sketch()

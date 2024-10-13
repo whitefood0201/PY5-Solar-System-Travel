@@ -21,6 +21,6 @@ def defaultZoom(w, h, t):
     return w, h
 
 def zoom(func_name):
-    dd = __import__("shapelib.zoom")
-    f = getattr(dd.zoom, func_name, None)
+    dd = __import__("shapelib.animetionlib.zoom")
+    f = getattr(dd.animetionlib.zoom, func_name, None)
     return f

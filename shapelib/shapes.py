@@ -1,7 +1,7 @@
 import py5
 
 class AbsShape:
-    def __init__(self, x=0, y=0, w=0, h=0, color="#FFFFFFFF", move=None, zoom=None, border=None):
+    def __init__(self, x=0, y=0, w=0, h=0, color="#FFFFFFFF", layer=2, move=None, zoom=None, border=None):
         self.x:int = x
         self.y:int = y
         self.w:int = w
@@ -13,11 +13,17 @@ class AbsShape:
         self.tick:int = 0
         self.maxLive:int = -1
         self.update = self.state_saver()
+        self.layer = layer
 
     def setPosition(self, x, y):
         self.x = x
         self.y = y
         self.update = self.state_saver()
+        return self
+
+    def setLayer(self, layer:int):
+        """ layer: 0-4 """
+        self.layer = layer
         return self
     
     def setSize(self, w:int, h:int):
@@ -48,7 +54,6 @@ class AbsShape:
         return not (outOfBorder or outTime)
     
     def draw(self):
-        py5.fill(self.color)
         if self.border != None: py5.stroke(self.border)
         self.inner_draw()
         py5.no_stroke()
@@ -85,9 +90,49 @@ class AbsShape:
 
 class Rect(AbsShape):
     def inner_draw(self):
+        py5.fill(self.color)
         py5.rect(self.x, self.y, self.w, self.h)
 
 
 class Ellipse(AbsShape):
     def inner_draw(self):
+        py5.fill(self.color)
         py5.ellipse(self.x, self.y, self.w, self.h)
+
+
+class Star(AbsShape):
+
+    def __init__(self, x=0, y=0, w=0.5, c1="#0000aa", c2="#0000ff", move=None, zoom=None, border=None):
+        super().__init__(x, y, w, 0, None, move, zoom, border)
+        self.c1 = c1
+        self.c2 = c2
+
+    def setColor(self, c1: str, c2: str):
+        self.c1 = c1
+        self.c2 = c2
+        return self
+    
+    def setSize(self, w: int):
+        self.w = w
+        self.update = self.state_saver()
+        return self
+    
+    def removed(self) -> bool:
+        outOfBorder = self.x == -self.w*10 or self.y == 640+self.w*10
+        outTime = self.tick == self.maxLive
+        return not (outOfBorder or outTime)
+
+    def inner_draw(self):
+        py5.fill(self.c1)
+        py5.stroke(self.c2)
+
+        x = self.x
+        y = self.y
+        w = self.w
+        py5.begin_shape()
+        py5.vertex(x, y)
+        py5.bezier_vertex(x, y, x, y+10*w, x+10*w, y+10*w)
+        py5.bezier_vertex(x+10*w, y+10*w, x, y+10*w, x, y+20*w)
+        py5.bezier_vertex(x, y+20*w, x, y+10*w, x-10*w, y+10*w)
+        py5.bezier_vertex(x-10*w, y+10*w, x, y+10*w, x, y)
+        py5.end_shape()
