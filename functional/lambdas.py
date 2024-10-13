@@ -12,3 +12,5 @@ def setter(obj, field):
 def intDict(key, value):
     v = value if value != None else 0
     return int(v)
+
+prints = lambda ele: print(ele)

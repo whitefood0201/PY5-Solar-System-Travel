@@ -67,6 +67,6 @@ def defaultMove(x, y, t):
 
 
 def move(func_name):
-    dd = __import__("shapelib.move")
-    f = getattr(dd.move, func_name, None)
+    dd = __import__("shapelib.animetionlib.move")
+    f = getattr(dd.animetionlib.move, func_name, None)
     return f
