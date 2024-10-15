@@ -16,8 +16,9 @@ def initScenes():
         nonlocal sceneIndex, sceneTick, scenes
         scene = scenes[sceneIndex]
         #print(sceneTick)
-        if sceneTick == scene["duration"]:
+        if sceneTick >= scene["duration"]:
             sceneIndex +=1
+            sceneTick = 0
         sceneTick += 1
         return scene
     
@@ -76,7 +77,7 @@ def draw():
         return
     
     # draw "PAUSE"
-    drawText("PAUSE", 320, 320, size=40, color=40, align=py5.CENTER)        
+    drawText("PAUSE", 320, 320, size=40, color=100, align=py5.CENTER)
 
 def key_pressed(e:py5.Py5KeyEvent):
     if e.get_key() == " ":
