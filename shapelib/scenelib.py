@@ -1,9 +1,8 @@
 import py5
-import shapelib.shapes as sp
 
-def shapeDraw(shape:sp.AbsShape):
+def shapeDraw(shape):
     shape.draw()
-def shapeUpdate(shape:sp.AbsShape):
+def shapeUpdate(shape):
     shape.update()
 
 def resetAll():

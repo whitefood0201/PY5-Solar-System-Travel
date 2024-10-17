@@ -3,11 +3,10 @@ import random
 import functional.FLfunctions as fl
 import functional.decorators as dc
 import functional.lambdas as la
-import shapelib.animetionlib.move as mv
-import shapelib.animetionlib.zoom as zm
+import shapelib.animetion.animetionlib as al
 import shapelib.shapes as sp
 
-def scenes_processor(path:str) -> list[tuple[list, str, int]]:
+def scenes_processor(path:str) -> list[dict[str, any]:]:
     tree = ET.ElementTree(file=path)
     root = tree.getroot()
     xmlScenes = root.findall(path="scene")
@@ -32,6 +31,8 @@ def genScene(xmlScene:ET.Element) -> dict[str, any]:
     layers = fl.reduce(takeLayer, shapeList, [[],[],[],[],[]])
     dic["layers"] = layers
     return dic
+
+# ------------- SceneGlobal -----------------
 
 def genTitle(xmlTitle:ET.Element) -> dict[str, any]:
     title = {}
@@ -92,6 +93,8 @@ def genLoopShapes(sceneConfig:dict, loopTag:ET.Element) -> list[sp.AbsShape]:
 
     return shapes
 
+# ----------------- Shape --------------------
+
 def genRect(sceneConfig, rectTag:ET.Element):
     x = int(getTagAttr(rectTag, "x", sceneConfig=sceneConfig, default=0))
     y = int(getTagAttr(rectTag, "y", sceneConfig=sceneConfig, default=0))
@@ -99,11 +102,12 @@ def genRect(sceneConfig, rectTag:ET.Element):
     h = int(getTagAttr(rectTag, "h", sceneConfig=sceneConfig, default=0))
     color = getTagAttr(rectTag, "color", sceneConfig=sceneConfig, default="#FFFFFF")
     border = getTagAttr(rectTag, "border", sceneConfig=sceneConfig, default=None)
+    rectMode = int(getTagAttr(rectTag, "rectMode", sceneConfig=sceneConfig, default=0)) # py5.CORNER
     layer = int(getTagAttr(rectTag, "layer", sceneConfig=sceneConfig, default=2))
-    move = getMove(rectTag.find(path="move"))
-    zoom = getZoom(rectTag.find(path="zoom"))
+    move = getMoveChain(rectTag.find(path="moveChain"))
+    zoom = getZoomChain(rectTag.find(path="zoomChain"))
 
-    rect = sp.Rect().setPosition(x, y).setSize(w, h).setColor(color).setLayer(layer).setBorder(border).setMove(move).setZoom(zoom)
+    rect = sp.Rect().setPosition(x, y).setSize(w, h).setColor(color).setLayer(layer).setBorder(border).setRectMode(rectMode).setMoveChain(move).setZoomChain(zoom)
     return rect
 
 def genEllip(sceneConfig, ellipTag:ET.Element):
@@ -114,10 +118,10 @@ def genEllip(sceneConfig, ellipTag:ET.Element):
     layer = int(getTagAttr(ellipTag, "layer", sceneConfig=sceneConfig, default=2))
     color = getTagAttr(ellipTag, "color", sceneConfig=sceneConfig, default="#FFFFFF")
     border = getTagAttr(ellipTag, "border", sceneConfig=sceneConfig, default=None)
-    move = getMove(ellipTag.find(path="move"))
-    zoom = getZoom(ellipTag.find(path="zoom"))
+    move = getMoveChain(ellipTag.find(path="moveChain"))
+    zoom = getZoomChain(ellipTag.find(path="zoomChain"))
 
-    ellip = sp.Ellipse().setPosition(x, y).setSize(w, h).setColor(color).setLayer(layer).setBorder(border).setMove(move).setZoom(zoom)
+    ellip = sp.Ellipse().setPosition(x, y).setSize(w, h).setColor(color).setLayer(layer).setBorder(border).setMoveChain(move).setZoomChain(zoom)
     return ellip
 
 def genStar(sceneConfig, starTag: ET.Element):
@@ -128,10 +132,10 @@ def genStar(sceneConfig, starTag: ET.Element):
     c2 = getTagAttr(starTag, "c2", sceneConfig=sceneConfig, default="#0000FF")
     layer = int(getTagAttr(starTag, "layer", sceneConfig=sceneConfig, default=2))
     border = getTagAttr(starTag, "border", sceneConfig=sceneConfig, default=None)
-    move = getMove(starTag.find(path="move"))
-    zoom = getZoom(starTag.find(path="zoom"))
+    move = getMoveChain(starTag.find(path="moveChain"))
+    zoom = getZoomChain(starTag.find(path="zoomChain"))
 
-    star = sp.Star().setPosition(x, y).setSize(w).setColor(c1, c2).setLayer(layer).setBorder(border).setMove(move).setZoom(zoom)
+    star = sp.Star().setPosition(x, y).setSize(w).setColor(c1, c2).setLayer(layer).setBorder(border).setMoveChain(move).setZoomChain(zoom)
     return star
 
 # -------------------- get ------------------------
@@ -164,14 +168,27 @@ def getTagAttr(tag:ET.Element, key, default=None, sceneConfig:dict={}):
     
     return default
 
-def getZoom(zoomTag:ET.Element):
-    if zoomTag == None: return zm.defaultZoom
-    name = zoomTag.text
-    keys = fl.dict_map(la.intDict, zoomTag.attrib)
-    return zm.zoom(name)(**keys)
+# ------------- AnimationChain --------------------
 
-def getMove(moveTag:ET.Element):
-    if moveTag == None: return mv.defaultMove
-    name = moveTag.text
-    keys = fl.dict_map(la.intDict, moveTag.attrib)
-    return mv.move(name)(**keys)
+def animationChainFactory(chainTag:ET.Element, animationType:str):
+    if chainTag == None: 
+        return al.AnimationBuilder([(al.animationFactory(None, animationType), 0)])
+    nodeTags = chainTag.findall(path="node")
+
+    def genAnimation(nodeTag:ET.Element):
+        animationTag = nodeTag.find(animationType)
+        name = animationTag.text
+        keys = fl.dict_map(la.intDict, animationTag.attrib)
+
+        animation = al.animationFactory(name, animationType)(**keys)
+        endTime = int(nodeTag.findtext(path="endTime", default=0))
+        return (animation, endTime)
+    animations = fl.map(genAnimation, nodeTags)
+
+    return al.AnimationBuilder(animations)
+
+def getZoomChain(zoomChainTag:ET.Element):
+    return animationChainFactory(zoomChainTag, "zoom")
+
+def getMoveChain(moveChainTag:ET.Element):
+    return animationChainFactory(moveChainTag, "move")

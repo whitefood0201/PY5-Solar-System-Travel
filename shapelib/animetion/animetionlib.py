@@ -1,4 +1,6 @@
 import functional.FLfunctions as fl
+import shapelib.animetion.move as mv
+import shapelib.animetion.zoom as zm
 
 class AnimetionChain:
     def __init__(self, func=None, next=None, endTime=0, isHead=False):
@@ -59,15 +61,24 @@ def AnimationBuilder(animationList:list[tuple[callable, int]]):
     fl.reduce(factory, animationList, head)
     return head
 
+# ------
+
+def animationFactory(func_name:str, animationType:str):
+    if animationType.lower() == "move":
+        return move(func_name)
+    elif animationType.lower() == "zoom":
+        return zoom(func_name)
+    else:
+        raise NotImplementedError("Unkown type" + animationType)
 
 def move(func_name:str) -> callable:
     """ load a move function from the function name"""
-    dd = __import__("shapelib.animetion.move")
-    f = getattr(dd.animetion.move, func_name, None)
+    if func_name == None: return mv.defaultMove
+    f = getattr(mv, func_name, None)
     return f
 
 def zoom(func_name:str) -> callable:
     """ load a zoom function from the function name"""
-    dd = __import__("shapelib.animetion.zoom")
-    f = getattr(dd.animetion.zoom, func_name, None)
+    if func_name == None: return zm.defaultZoom
+    f = getattr(zm, func_name, None)
     return f

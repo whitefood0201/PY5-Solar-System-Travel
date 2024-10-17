@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenes>
     <scene>
-        <duration>1920</duration>
+        <duration>1280</duration>
         <title>
             <font-size>32</font-size>
             <color>#0000AA</color>
@@ -25,13 +25,13 @@
                         <to>100</to>
                     </random>
                 </count>
-                <loopContent>                    <!-- equals a `shapes` tag -->
+                <loopContent>
                     <star>
                         <layer>3</layer>
                         <x>
                             <random>
                                 <from>810</from>
-                                <to>1920</to>
+                                <to>2560</to>
                             </random>
                         </x>
                         <y>
@@ -69,14 +69,6 @@
                     </star>
                 </loopContent>
             </loop>
-
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <w>1920</w>
-                <h>640</h>
-                <color>#000D11</color>
-            </rect>
             <rect>
                 <x>0</x>
                 <y>0</y>
@@ -122,15 +114,128 @@
             </ellipse>
             <rect>
                 <layer>4</layer>
-                <x>180</x>
-                <y>300</y>
+                <rectMode>3</rectMode>
+                <x>200</x>
+                <y>320</y>
                 <w>50</w>
                 <h>41</h>
                 <color>#A8A8A8</color>
                 <border>#999999</border>
-                <move>no_move</move>
+                <moveChain>
+                    <item>
+                        <move>no_move</move>
+                    </item>
+                </moveChain>
+            </rect>
+        </shapes>
+    </scene>
+
+    <scene>
+        <duration>1000</duration>
+        <title>
+            <font-size>32</font-size>
+            <name>Space</name>
+            <color>#FFFFFF</color>
+        </title>
+        <array name="starColors" type="str">
+            <value>#0000FF</value>
+            <value>#0000AA</value>
+            <value>#000077</value>
+            <value>#000044</value>
+        </array>
+        <shapes>
+            <loop>
+                <i>0</i>
+                <step>1</step>
+                <count>
+                    <random>
+                        <from>100</from>
+                        <to>140</to>
+                    </random>
+                </count>
+                <loopContent>                    <!-- equals a `shapes` tag -->
+                    <star>
+                        <layer>2</layer>
+                        <x>
+                            <random>
+                                <from>0</from>
+                                <to>1280</to>
+                            </random>
+                        </x>
+                        <y>
+                            <random>
+                                <from>0</from>
+                                <to>640</to>
+                            </random>
+                        </y>
+                        <w>
+                            <random type="float">
+                                <from>0.1</from>
+                                <to>1</to>
+                            </random>
+                        </w>
+                        <c1>
+                            <getArray name="starColors">
+                                <index>
+                                    <random>
+                                        <from>0</from>
+                                        <to>3</to>
+                                    </random>
+                                </index>
+                            </getArray>
+                        </c1>
+                        <c2>
+                            <getArray name="starColors">
+                                <index>
+                                    <random>
+                                        <from>0</from>
+                                        <to>3</to>
+                                    </random>
+                                </index>
+                            </getArray>
+                        </c2>
+                    </star>
+                </loopContent>
+            </loop>
+            <ellipse>
+                <layer>3</layer>
+                <x>-121</x>
+                <y>310</y>
+                <w>242</w>
+                <h>240</h>
+                <color>#7fb0d7</color>
+                <moveChain>
+                    <node>
+                        <move dx="200" dy="0" timeUse="200" keepTime="500" startIn="100">moveToThenRecover</move>
+                    </node>
+                </moveChain>
+                <zoomChain>
+                    <node>
+                        <zoom timeUse="1100">zoomToZero</zoom>
+                    </node>
+                </zoomChain>
+            </ellipse>
+            <rect>
+                <layer>4</layer>
+                <rectMode>3</rectMode>
+                <x>100</x>
+                <y>320</y>
+                <w>50</w>
+                <h>41</h>
+                <color>#A8A8A8</color>
+                <border>#999999</border>
+                <moveChain>
+                    <node>
+                        <move>no_move</move>
+                    </node>
+                </moveChain>
+                <zoomChain>
+                    <node>
+                        <endTime>100</endTime>
+                        <zoom dw="-15" dh="0" timeUse="200" keepTime="500" startIn="100">zoomToThenRecover</zoom>
+                    </node>
+                </zoomChain>
             </rect>
         </shapes>
     </scene>
 </scenes>
-
