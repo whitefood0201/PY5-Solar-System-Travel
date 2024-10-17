@@ -1,15 +1,17 @@
 import py5
+import shapelib.scenelib as sl
+import shapelib.animetion.animetionlib as al
 
 class AbsShape:
-    def __init__(self, x=0, y=0, w=0, h=0, color="#FFFFFFFF", layer=2, move=None, zoom=None, border=None):
+    def __init__(self, x=0, y=0, w=0, h=0, color="#FFFFFFFF", layer=2, moveChain=None, zoomChain=None, border=None):
         self.x:int = x
         self.y:int = y
         self.w:int = w
         self.h:int = h
         self.color:str = color
         self.border:str = border
-        self.move:callable = move
-        self.zoom:callable = zoom
+        self.moveChain:al.AnimetionChain = moveChain
+        self.zoomChain:al.AnimetionChain = zoomChain
         self.tick:int = 0
         self.maxLive:int = -1
         self.update = self.state_saver()
@@ -36,12 +38,12 @@ class AbsShape:
         self.color = color
         return self
     
-    def setMove(self, move):
-        self.move = move
+    def setMoveChain(self, moveChain):
+        self.moveChain = moveChain
         return self
     
-    def setZoom(self, zoom):
-        self.zoom = zoom
+    def setZoomChain(self, zoomChain):
+        self.zoomChain = zoomChain
         return self
     
     def setBorder(self, border):
@@ -50,13 +52,15 @@ class AbsShape:
         
     def removed(self) -> bool:
         outOfBorder = self.x == -self.w or self.y == 640+self.h
+        outOfSize = self.w == 0 or self.h == 0
         outTime = self.tick == self.maxLive
-        return not (outOfBorder or outTime)
+        return not (outOfBorder or outTime or outOfSize)
     
     def draw(self):
         if self.border != None: py5.stroke(self.border)
         self.inner_draw()
         py5.no_stroke()
+        sl.resetAll()
 
     def inner_draw(self):
         raise NotImplementedError("draw() hasn't implement")
@@ -68,8 +72,8 @@ class AbsShape:
         ori_h = self.h
         def update():
             nonlocal ori_x, ori_y, ori_w, ori_h
-            self.x, self.y = self.move(ori_x, ori_y, self.tick)
-            self.w, self.h = self.zoom(ori_w, ori_h, self.tick)
+            self.x, self.y = self.moveChain.animation(ori_x, ori_y, self.tick)
+            self.w, self.h = self.zoomChain.animation(ori_w, ori_h, self.tick)
             self.tick+=1
         return update
     
@@ -89,9 +93,18 @@ class AbsShape:
 
 
 class Rect(AbsShape):
+    def __init__(self, x=0, y=0, w=0, h=0, color="#FFFFFFFF", layer=2, move=None, zoom=None, border=None, rectMode=py5.CORNER):
+        super().__init__(x, y, w, h, color, layer, move, zoom, border)
+        self.rectMode = rectMode
+
     def inner_draw(self):
         py5.fill(self.color)
+        py5.rect_mode(self.rectMode)
         py5.rect(self.x, self.y, self.w, self.h)
+
+    def setRectMode(self, rectMode):
+        self.rectMode = rectMode
+        return self
 
 
 class Ellipse(AbsShape):

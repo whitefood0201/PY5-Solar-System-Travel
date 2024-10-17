@@ -51,6 +51,50 @@ def line_move(x0, y0, dx, dy):
         return x2, y2
     return line
 
+def keepATime(startTime, keepTime):
+    def move(x, y, t):
+        if t < startTime:
+            return defaultMove(x, y, t)
+        if t > startTime and t < startTime+keepTime:
+            return x-startTime, y
+        return defaultMove(x, y, t-startTime-keepTime)
+    return move
+
+def moveTo(dx, dy, timeUse):
+    ddx:float = dx/timeUse
+    ddy:float = dy/timeUse
+    def move(x, y, t):
+        if t >= timeUse: return x+dx, y+dy
+        x2 = x + ddx*t
+        y2 = y + ddy*t
+        return x2, y2
+    return move
+
+def moveToThenRecover(dx, dy, timeUse, keepTime, startIn=0):
+    ddx:float = dx/timeUse
+    ddy:float = dy/timeUse
+    def move(x, y, t):
+        if t <= startIn: return x, y
+        t -= startIn
+
+        if t <= timeUse:
+            x2 = x + ddx*t
+            y2 = y + ddy*t
+            return x2, y2
+        
+        if t > timeUse and t <= timeUse+keepTime:
+            return x + dx, y + dy
+        
+        if t > timeUse+keepTime and t <= timeUse*2+keepTime:
+            x += dx
+            y += dy
+            x2 = x - ddx*(t-timeUse-keepTime)
+            y2 = y - ddy*(t-timeUse-keepTime)
+            return x2, y2
+        
+        if t > timeUse*2+keepTime: return x, y
+    
+    return move
 
 def parabola_move(p, x0=0, y0=0):
     def parabola(x, y ,t):
@@ -60,13 +104,6 @@ def parabola_move(p, x0=0, y0=0):
         return x2, y2
     return parabola
 
-
 def defaultMove(x, y, t):
     x2 = x-t
     return x2, y
-
-
-def move(func_name):
-    dd = __import__("shapelib.animetionlib.move")
-    f = getattr(dd.animetionlib.move, func_name, None)
-    return f
