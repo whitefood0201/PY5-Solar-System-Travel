@@ -2,8 +2,11 @@ import py5
 
 def shapeDraw(shape):
     shape.draw()
-def shapeUpdate(shape):
-    shape.update()
+
+def shapeUpdate(tick):
+    def update(shape):
+        shape.update(tick)
+    return update
 
 def resetAll():
     py5.rect_mode(py5.CORNER)

@@ -14,8 +14,14 @@ def initScenes():
 
     def updateScene():
         nonlocal sceneIndex, sceneTick, scenes
+        
+        # reset
+        if sceneIndex >= len(scenes): 
+            sceneIndex = 0 
+            sceneTick = 0
+            changeStop()
+
         scene = scenes[sceneIndex]
-        #print(sceneTick)
         if sceneTick >= scene["duration"]:
             sceneIndex +=1
             sceneTick = 0
@@ -26,15 +32,15 @@ def initScenes():
         nonlocal currScene
         currScene = updateScene()
         
-        def updLayer(layer):
-            return fl.filter(lambda shp: not shp.removed(), layer)
-        layers = fl.map(updLayer, currScene["layers"])
+        # def updLayer(layer):
+        #     return fl.filter(lambda shp: not shp.removed(), layer)
+        # layers = fl.map(updLayer, currScene["layers"])
 
         def upd(layer):
-            fl.map(shapeUpdate, layer)
-        fl.map(upd, layers)
+            fl.map(shapeUpdate(sceneTick), layer)
+        fl.map(upd, currScene["layers"])
 
-        currScene["layers"] = layers
+        #currScene["layers"] = layers
 
     def getScene():
         return currScene
