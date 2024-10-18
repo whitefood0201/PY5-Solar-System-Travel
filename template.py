@@ -4,18 +4,24 @@ import shapelib.sceneFactory as sf
 from shapelib.scenelib import *
 from shapelib.shapes import *
 
-SCENE_PATH = ".\\shape.xml"
+SCENES_PATH = ".\\scenes.txt"
 
 def initScenes():
-    scenes = sf.scenes_processor(SCENE_PATH)
+    scenes = sf.scenes_processor(SCENES_PATH)
     sceneIndex = 0
     sceneTick = 0
     currScene = scenes[0]
 
     def updateScene():
         nonlocal sceneIndex, sceneTick, scenes
+        
+        # reset
+        if sceneIndex >= len(scenes): 
+            sceneIndex = 0 
+            sceneTick = 0
+            changeStop()
+
         scene = scenes[sceneIndex]
-        #print(sceneTick)
         if sceneTick >= scene["duration"]:
             sceneIndex +=1
             sceneTick = 0
@@ -26,15 +32,15 @@ def initScenes():
         nonlocal currScene
         currScene = updateScene()
         
-        def updLayer(layer):
-            return fl.filter(lambda shp: not shp.removed(), layer)
-        layers = fl.map(updLayer, currScene["layers"])
+        # def updLayer(layer):
+        #     return fl.filter(lambda shp: not shp.removed(), layer)
+        # layers = fl.map(updLayer, currScene["layers"])
 
         def upd(layer):
-            fl.map(shapeUpdate, layer)
-        fl.map(upd, layers)
+            fl.map(shapeUpdate(sceneTick), layer)
+        fl.map(upd, currScene["layers"])
 
-        currScene["layers"] = layers
+        #currScene["layers"] = layers
 
     def getScene():
         return currScene
@@ -62,7 +68,7 @@ def setup():
 def draw():
     resetAll()
     scene = getScene()
-    layers:list[list[sp.AbsShape]] = scene["layers"]
+    layers:list[list[AbsShape]] = scene["layers"]
 
     py5.background(10, 10, 20)
     

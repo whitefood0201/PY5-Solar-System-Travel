@@ -7,10 +7,16 @@ import shapelib.animetion.animetionlib as al
 import shapelib.shapes as sp
 
 def scenes_processor(path:str) -> list[dict[str, any]:]:
-    tree = ET.ElementTree(file=path)
-    root = tree.getroot()
-    xmlScenes = root.findall(path="scene")
-    scenes = fl.map(genScene, xmlScenes)
+    scene_files = None
+    with open(file=path, mode="r") as file:
+        scene_files = file.read().splitlines()
+    if scene_files == None: raise ValueError("something wrong in reading file")
+
+    def genTree(filepath: str):
+        tree = ET.ElementTree(file=filepath)
+        return tree.getroot() # scene
+    sceneXmls = fl.map(genTree, scene_files)
+    scenes = fl.map(genScene, sceneXmls)
     return scenes
 
 def genScene(xmlScene:ET.Element) -> dict[str, any]:
@@ -176,15 +182,18 @@ def animationChainFactory(chainTag:ET.Element, animationType:str):
     nodeTags = chainTag.findall(path="node")
 
     def genAnimation(nodeTag:ET.Element):
-        animationTag = nodeTag.find(animationType)
-        name = animationTag.text
-        keys = fl.dict_map(la.intDict, animationTag.attrib)
-
-        animation = al.animationFactory(name, animationType)(**keys)
         endTime = int(nodeTag.findtext(path="endTime", default=0))
-        return (animation, endTime)
-    animations = fl.map(genAnimation, nodeTags)
+        name = nodeTag.findtext(path=animationType, default=None)
+        animationTag = nodeTag.find(animationType)
 
+        if animationTag == None or name == None or name == "":
+            animation = al.animationFactory(None, animationType)
+        else:
+            keys = fl.dict_map(la.intDict, animationTag.attrib)
+            animation = al.animationFactory(name, animationType)(**keys)
+        return (animation, endTime)
+        
+    animations = fl.map(genAnimation, nodeTags)
     return al.AnimationBuilder(animations)
 
 def getZoomChain(zoomChainTag:ET.Element):

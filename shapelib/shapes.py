@@ -50,11 +50,13 @@ class AbsShape:
         self.border = border
         return self
         
-    def removed(self) -> bool:
-        outOfBorder = self.x == -self.w or self.y == 640+self.h
-        outOfSize = self.w == 0 or self.h == 0
-        outTime = self.tick == self.maxLive
-        return not (outOfBorder or outTime or outOfSize)
+    # def removed(self) -> bool:
+    #     outOfBorderRight = self.x < -self.w-200 or self.y < -self.h-200
+    #     outOfBorderLeft = self.x > 640+self.w+200 or self.y > 640+self.h+200
+    #     outOfBorder = outOfBorderRight or outOfBorderLeft
+    #     outOfSize = self.w == 0 or self.h == 0
+    #     outTime = self.tick == self.maxLive
+    #     return not (outOfBorder or outTime or outOfSize)
     
     def draw(self):
         if self.border != None: py5.stroke(self.border)
@@ -70,11 +72,10 @@ class AbsShape:
         ori_y = self.y
         ori_w = self.w
         ori_h = self.h
-        def update():
+        def update(tick):
             nonlocal ori_x, ori_y, ori_w, ori_h
-            self.x, self.y = self.moveChain.animation(ori_x, ori_y, self.tick)
-            self.w, self.h = self.zoomChain.animation(ori_w, ori_h, self.tick)
-            self.tick+=1
+            self.x, self.y = self.moveChain.animation(ori_x, ori_y, tick)
+            self.w, self.h = self.zoomChain.animation(ori_w, ori_h, tick)
         return update
     
     def __str__(self):
