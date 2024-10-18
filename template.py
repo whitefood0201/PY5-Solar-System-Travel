@@ -4,10 +4,10 @@ import shapelib.sceneFactory as sf
 from shapelib.scenelib import *
 from shapelib.shapes import *
 
-SCENE_PATH = ".\\shape.xml"
+SCENES_PATH = ".\\scenes.txt"
 
 def initScenes():
-    scenes = sf.scenes_processor(SCENE_PATH)
+    scenes = sf.scenes_processor(SCENES_PATH)
     sceneIndex = 0
     sceneTick = 0
     currScene = scenes[0]
@@ -68,7 +68,7 @@ def setup():
 def draw():
     resetAll()
     scene = getScene()
-    layers:list[list[sp.AbsShape]] = scene["layers"]
+    layers:list[list[AbsShape]] = scene["layers"]
 
     py5.background(10, 10, 20)
     

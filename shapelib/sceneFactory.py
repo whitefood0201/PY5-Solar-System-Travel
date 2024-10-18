@@ -7,10 +7,16 @@ import shapelib.animetion.animetionlib as al
 import shapelib.shapes as sp
 
 def scenes_processor(path:str) -> list[dict[str, any]:]:
-    tree = ET.ElementTree(file=path)
-    root = tree.getroot()
-    xmlScenes = root.findall(path="scene")
-    scenes = fl.map(genScene, xmlScenes)
+    scene_files = None
+    with open(file=path, mode="r") as file:
+        scene_files = file.read().splitlines()
+    if scene_files == None: raise ValueError("something wrong in reading file")
+
+    def genTree(filepath: str):
+        tree = ET.ElementTree(file=filepath)
+        return tree.getroot() # scene
+    sceneXmls = fl.map(genTree, scene_files)
+    scenes = fl.map(genScene, sceneXmls)
     return scenes
 
 def genScene(xmlScene:ET.Element) -> dict[str, any]:
