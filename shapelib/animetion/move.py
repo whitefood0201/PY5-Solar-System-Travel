@@ -104,6 +104,8 @@ def parabola_move(p, x0=0, y0=0):
         return x2, y2
     return parabola
 
-def defaultMove(x, y, t):
-    x2 = x-t
-    return x2, y
+def defaultMove():
+    def default(x, y, t):
+        x2 = x-t
+        return x2, y
+    return default

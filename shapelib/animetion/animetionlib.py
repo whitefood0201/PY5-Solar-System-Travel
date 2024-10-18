@@ -28,11 +28,20 @@ class AnimetionChain:
     def animation(self, a:float, b:float, t:int) -> tuple[float, float]:
         endT = self.endTime
         next = self.next
-        if t < endT or next == None:
+        if self.isHead: 
+            return self.next.animation(a, b, t)
+        
+        if t < endT or endT == 0:
             return self.func(a, b, t)
+        
+        # goto next
+
+        # non-next
+        if next == None: return a, b
             
-        x1, y1 = self.func(a, b, endT)
-        return self.next.animation(x1, y1, t-endT)
+        # next
+        a1, b1 = self.func(a, b, endT)
+        return self.next.animation(a1, b1, t-endT)
 
     def __str__(self):
         obj = {
@@ -73,12 +82,12 @@ def animationFactory(func_name:str, animationType:str):
 
 def move(func_name:str) -> callable:
     """ load a move function from the function name"""
-    if func_name == None: return mv.defaultMove
+    if func_name == None: return mv.defaultMove()
     f = getattr(mv, func_name, None)
     return f
 
 def zoom(func_name:str) -> callable:
     """ load a zoom function from the function name"""
-    if func_name == None: return zm.defaultZoom
+    if func_name == None: return zm.defaultZoom()
     f = getattr(zm, func_name, None)
     return f

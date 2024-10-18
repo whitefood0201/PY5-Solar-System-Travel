@@ -60,6 +60,7 @@ def zoomToThenRecover(dw, dh, timeUse, keepTime, startIn=0):
     
     return zoom
 
-
-def defaultZoom(w, h, t):
-    return w, h
+def defaultZoom():
+    def default(w, h, t):
+        return w, h
+    return default

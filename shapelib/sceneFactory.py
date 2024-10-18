@@ -176,15 +176,18 @@ def animationChainFactory(chainTag:ET.Element, animationType:str):
     nodeTags = chainTag.findall(path="node")
 
     def genAnimation(nodeTag:ET.Element):
-        animationTag = nodeTag.find(animationType)
-        name = animationTag.text
-        keys = fl.dict_map(la.intDict, animationTag.attrib)
-
-        animation = al.animationFactory(name, animationType)(**keys)
         endTime = int(nodeTag.findtext(path="endTime", default=0))
-        return (animation, endTime)
-    animations = fl.map(genAnimation, nodeTags)
+        name = nodeTag.findtext(path=animationType, default=None)
+        animationTag = nodeTag.find(animationType)
 
+        if animationTag == None or name == None or name == "":
+            animation = al.animationFactory(None, animationType)
+        else:
+            keys = fl.dict_map(la.intDict, animationTag.attrib)
+            animation = al.animationFactory(name, animationType)(**keys)
+        return (animation, endTime)
+        
+    animations = fl.map(genAnimation, nodeTags)
     return al.AnimationBuilder(animations)
 
 def getZoomChain(zoomChainTag:ET.Element):
