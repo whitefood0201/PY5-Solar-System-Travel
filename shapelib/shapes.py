@@ -51,7 +51,9 @@ class AbsShape:
         return self
         
     def removed(self) -> bool:
-        outOfBorder = self.x == -self.w or self.y == 640+self.h
+        outOfBorderRight = self.x < -self.w-200 or self.y < -self.h-200
+        outOfBorderLeft = self.x > 640+self.w+200 or self.y > 640+self.h+200
+        outOfBorder = outOfBorderRight or outOfBorderLeft
         outOfSize = self.w == 0 or self.h == 0
         outTime = self.tick == self.maxLive
         return not (outOfBorder or outTime or outOfSize)
