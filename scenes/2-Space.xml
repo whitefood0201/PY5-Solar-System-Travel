@@ -6,14 +6,14 @@
         <name>Space</name>
         <color>#000044</color>
     </title>
-    
+
     <array name="starColors" type="str">
         <value>#0000FF</value>
         <value>#0000AA</value>
         <value>#000077</value>
         <value>#000044</value>
     </array>
-    
+
     <shapes>
         <loop>
             <i>0</i>
@@ -42,7 +42,7 @@
                     <w>
                         <random type="float">
                             <from>0.1</from>
-                            <to>1</to>
+                            <to>0.3</to>
                         </random>
                     </w>
                     <c1>

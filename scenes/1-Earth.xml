@@ -42,7 +42,7 @@
                     <w>
                         <random type="float">
                             <from>0.1</from>
-                            <to>1</to>
+                            <to>0.3</to>
                         </random>
                     </w>
                     <c1>
