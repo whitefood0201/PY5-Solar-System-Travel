@@ -9,7 +9,8 @@ import shapelib.shapes as sp
 def scenes_processor(path:str) -> list[dict[str, any]:]:
     scene_files = None
     with open(file=path, mode="r") as file:
-        scene_files = file.read().splitlines()
+        temp = file.read().splitlines()
+        scene_files = fl.filter(lambda line: line.startswith("#"), temp)
     if scene_files == None: raise ValueError("something wrong in reading file")
 
     def genTree(filepath: str):
