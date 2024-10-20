@@ -5,14 +5,18 @@ from shapelib.scenelib import *
 from shapelib.shapes import *
 
 SCENES_PATH = ".\\scenes.txt"
+DEBUG = True
+#DEBUG = False
 
 def initVelocity():
-    VELOCITY = [1, 2, 4]
+    VELOCITY = [1, 2, 4, 8]
     velocityIndex = 0
 
     def change(dir:int):
         """ dir: -1 or 1"""
         nonlocal velocityIndex
+
+        if not DEBUG: return
 
         velocityIndex += dir
 
@@ -20,7 +24,7 @@ def initVelocity():
         if velocityIndex >= len(VELOCITY):
             velocityIndex = 0
         elif velocityIndex < 0:
-            velocityIndex = 2
+            velocityIndex = len(VELOCITY)-1
 
     def getVelocity():
         return VELOCITY[velocityIndex]
@@ -81,6 +85,10 @@ def initStop():
 changeStop, getStop = initStop()
 
 
+def debugging():
+    drawText("velocity: {}".format(getV()), 580, 25, size=25, color=100, align=py5.CENTER)
+
+
 # ----------------------PY5--------------------------
 
 
@@ -99,8 +107,10 @@ def draw():
 
     title = scene["title"]
     drawText(title["name"], 10, 30, size=title["font-size"], color=title["color"])
-    drawText("velocity: {}".format(getV()), 580, 25, size=25, color=100, align=py5.CENTER)
 
+    if DEBUG:
+        debugging()
+    
     if not getStop():
         updateShapes() 
         return
