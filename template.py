@@ -5,8 +5,8 @@ from shapelib.scenelib import *
 from shapelib.shapes import *
 
 SCENES_PATH = ".\\scenes.txt"
-DEBUG = True
-#DEBUG = False
+#DEBUG = True
+DEBUG = False
 
 def initVelocity():
     VELOCITY = [1, 2, 4, 8]
