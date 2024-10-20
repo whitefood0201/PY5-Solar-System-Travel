@@ -1,0 +1,119 @@
+<scene>
+    <duration>1500</duration>
+    <title>
+        <font-size>32</font-size>
+        <name>Moon</name>
+        <color>#7d7372</color>
+    </title>
+
+    <array name="starColors" type="str">
+        <value>#0000FF</value>
+        <value>#0000AA</value>
+        <value>#000077</value>
+        <value>#000044</value>
+    </array>
+
+    <shapes>
+        <rect>
+            <layer>4</layer>
+            <rectMode>3</rectMode>
+            <x>-30</x>
+            <y>320</y>
+            <w>50</w>
+            <h>41</h>
+            <color>#A8A8A8</color>
+            <border>#555555</border>
+            <moveChain>
+                <node>
+                    <endTime>65</endTime>
+                    <move x0="0" y0="0" dx="2" dy="0">line_move</move>
+                </node>
+                <node>
+                    <endTime>1100</endTime>
+                    <move>no_move</move>
+                </node>
+                <node>
+                    <move x0="0" y0="0" dx="2" dy="0">line_move</move>
+                </node>
+            </moveChain>
+        </rect>
+
+        <ellipse>
+            <layer>3</layer>
+            <x>1000</x>
+            <y>150</y>
+            <w>400</w>
+            <h>400</h>
+            <color>#b0a7a5</color>
+            <moveChain>
+                <node>
+                    <endTime>0</endTime>
+                </node>
+            </moveChain>
+        </ellipse>
+
+        <loop>
+            <i>0</i>
+            <step>1</step>
+            <count>
+                <random>
+                    <from>160</from>
+                    <to>200</to>
+                </random>
+            </count>
+            <loopContent>                <!-- equals a `shapes` tag -->
+                <star>
+                    <moveChain>
+                        <node>
+                            <endTime>65</endTime>
+                            <move>no_move</move>
+                        </node>
+                        <node>
+                            <endTime>0</endTime>
+                            <move></move>
+                        </node>
+                    </moveChain>
+                    <layer>2</layer>
+                    <x>
+                        <random>
+                            <from>0</from>
+                            <to>2200</to>
+                        </random>
+                    </x>
+                    <y>
+                        <random>
+                            <from>0</from>
+                            <to>640</to>
+                        </random>
+                    </y>
+                    <w>
+                        <random type="float">
+                            <from>0.1</from>
+                            <to>0.3</to>
+                        </random>
+                    </w>
+                    <c1>
+                        <getArray name="starColors">
+                            <index>
+                                <random>
+                                    <from>0</from>
+                                    <to>3</to>
+                                </random>
+                            </index>
+                        </getArray>
+                    </c1>
+                    <c2>
+                        <getArray name="starColors">
+                            <index>
+                                <random>
+                                    <from>0</from>
+                                    <to>3</to>
+                                </random>
+                            </index>
+                        </getArray>
+                    </c2>
+                </star>
+            </loopContent>
+        </loop>
+    </shapes>
+</scene>
