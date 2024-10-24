@@ -1,6 +1,7 @@
 import math
 
 #https://zh.wikipedia.org/zh-cn/%E5%8F%83%E6%95%B8%E6%96%B9%E7%A8%8B
+# TODO 应该有个按百分比变化
 
 def line_zoom(dw, dh):
     def line(w, h, t):

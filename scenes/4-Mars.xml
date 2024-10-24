@@ -2,8 +2,8 @@
     <duration>1500</duration>
     <title>
         <font-size>32</font-size>
-        <name>Moon</name>
-        <color>#7d7372</color>
+        <name>Mars</name>
+        <color>#ce5d34</color>
     </title>
 
     <array name="starColors" type="str">
@@ -41,32 +41,16 @@
         <ellipse>
             <layer>3</layer>
             <x>1000</x>
-            <y>150</y>
-            <w>400</w>
-            <h>400</h>
-            <color>#b0a7a5</color>
+            <y>200</y>
+            <w>500</w>
+            <h>500</h>
+            <color>#ce5d34</color>
             <moveChain>
                 <node>
                     <endTime>0</endTime>
                 </node>
             </moveChain>
         </ellipse>
-
-        <ellipse>
-            <layer>2</layer>
-            <x>320</x>
-            <y>150</y>
-            <w>53</w>
-            <h>50</h>
-            <color>#7fb0d7</color>
-            <moveChain>
-                <node>
-                    <endTime>0</endTime>
-                    <move>no_move</move>
-                </node>
-            </moveChain>
-        </ellipse>
-
 
         <loop>
             <i>0</i>

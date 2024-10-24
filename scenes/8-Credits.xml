@@ -1,0 +1,50 @@
+<scene>
+    <duration>1200</duration>
+    <title>
+        <font-size>32</font-size>
+        <name>Credits</name>
+        <color>#95b39e</color>
+    </title>
+
+    <shapes>
+        <text>
+            <msg>CREATED BY</msg>
+            <color>#7fb0d7</color>
+            <x>320</x>
+            <y>100</y>
+            <w>30</w>
+        </text>
+
+        <text>
+            <msg>__whitefood</msg>
+            <color>#b0a7a5</color>
+            <x>320</x>
+            <y>140</y>
+            <w>22</w>
+        </text>
+
+        <text>
+            <msg>USING</msg>
+            <color>#ce5d34</color>
+            <x>320</x>
+            <y>210</y>
+            <w>30</w>
+        </text>
+
+        <text>
+            <msg>py5</msg>
+            <color>#95b39e</color>
+            <x>300</x>
+            <y>250</y>
+            <w>22</w>
+        </text>
+
+        <img>
+            <src>./img/py5.png</src>
+            <x>320</x>
+            <y>220</y>
+            <w>51</w>
+            <h>51</h>
+        </img>
+    </shapes>
+</scene>
