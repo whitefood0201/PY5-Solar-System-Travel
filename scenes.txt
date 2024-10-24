@@ -1,3 +1,8 @@
 ./scenes/1-Earth.xml
 ./scenes/2-Space.xml
 ./scenes/3-Moon.xml
+./scenes/4-Mars.xml
+./scenes/5-Jupiter.xml
+./scenes/6-Saturn.xml
+./scenes/7-PaleBlueDot.xml
+./scenes/8-Credits.xml

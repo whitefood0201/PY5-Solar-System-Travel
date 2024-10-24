@@ -10,7 +10,8 @@ DEBUG = False
 
 def initVelocity():
     VELOCITY = [1, 2, 4, 8]
-    velocityIndex = 0
+    velocityIndex = 1
+    #velocityIndex = 3
 
     def change(dir:int):
         """ dir: -1 or 1"""
@@ -91,6 +92,7 @@ def debugging():
 
 # ----------------------PY5--------------------------
 
+BACKGROUD = "#0A0A14"
 
 def setup():
     py5.size(640, 640)
@@ -100,7 +102,7 @@ def draw():
     scene = getScene()
     layers:list[list[AbsShape]] = scene["layers"]
 
-    py5.background(10, 10, 20)
+    py5.background(BACKGROUD)
     
     for shapes in layers:
         fl.map(shapeDraw, shapes)

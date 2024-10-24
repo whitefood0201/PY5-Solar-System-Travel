@@ -2,8 +2,8 @@
     <duration>1500</duration>
     <title>
         <font-size>32</font-size>
-        <name>Moon</name>
-        <color>#7d7372</color>
+        <name>Saturn</name>
+        <color>#a38c66</color>
     </title>
 
     <array name="starColors" type="str">
@@ -38,35 +38,54 @@
             </moveChain>
         </rect>
 
-        <ellipse>
-            <layer>3</layer>
-            <x>1000</x>
-            <y>150</y>
-            <w>400</w>
-            <h>400</h>
-            <color>#b0a7a5</color>
-            <moveChain>
-                <node>
-                    <endTime>0</endTime>
-                </node>
-            </moveChain>
-        </ellipse>
+        <ring>
+            <x>890</x>
+            <y>200</y>
+            <w>430</w>
+            <h>105</h>
+            <borderSize>8</borderSize>
+            <border>#858384</border>
 
-        <ellipse>
-            <layer>2</layer>
-            <x>320</x>
-            <y>150</y>
-            <w>53</w>
-            <h>50</h>
-            <color>#7fb0d7</color>
-            <moveChain>
-                <node>
-                    <endTime>0</endTime>
-                    <move>no_move</move>
-                </node>
-            </moveChain>
-        </ellipse>
+            <innerShape type="ring">
+                <w>420</w>
+                <h>90</h>
+                <borderSize>5</borderSize>
+                <border>#47444a</border>
 
+                <innerShape type="ring">
+                    <w>395</w>
+                    <h>76</h>
+                    <borderSize>12</borderSize>
+                    <border>#d5cbcc</border>
+
+                    <innerShape type="ring">
+                        <w>375</w>
+                        <h>58</h>
+                        <borderSize>6</borderSize>
+                        <border>#a2999a</border>
+
+                        <innerShape type="ring">
+                            <w>358</w>
+                            <h>46</h>
+                            <borderSize>5</borderSize>
+                            <border>#282627</border>
+
+                            <innerShape type="ellipse">
+                                <layer>2</layer>
+                                <w>200</w>
+                                <h>200</h>
+                                <color>#a38c66</color>
+                                <moveChain>
+                                    <node>
+                                        <endTime>0</endTime>
+                                    </node>
+                                </moveChain>
+                            </innerShape>
+                        </innerShape>
+                    </innerShape>
+                </innerShape>
+            </innerShape>
+        </ring>
 
         <loop>
             <i>0</i>
